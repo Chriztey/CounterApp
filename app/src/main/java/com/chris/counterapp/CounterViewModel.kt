@@ -1,16 +1,20 @@
 package com.chris.counterapp
 
-class CounterViewModel () {
-    var _count = 0
-    val count = _count
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+
+class CounterViewModel : ViewModel () {
+    private val _count = mutableStateOf(0)
+    val count : MutableState<Int> = _count
 
     fun increment () {
-        _count =+1
-        return
+        _count.value ++
+
     }
 
     fun decrement () {
-        _count =-1
-        return
+        _count.value --
+
     }
 }

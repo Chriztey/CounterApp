@@ -4,6 +4,7 @@ import android.graphics.drawable.Icon
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,13 +35,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val viewModel: CounterViewModel by viewModels()
             CounterAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    CounterApp()
+                    CounterApp(viewModel)
                 }
             }
 
@@ -49,43 +51,18 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CounterAppTheme {
-        Greeting("Android")
-    }
-}
 
 @Composable
-fun CounterApp() {
-    val counter = remember {
-        mutableStateOf(0)
-    }
+fun CounterApp(viewModel: CounterViewModel) {
 
-    fun increment () {
-        counter.value ++
-    }
 
-    fun decrement () {
-        counter.value --
-    }
-    
     Column (
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ){
         Text(
-            text = "Count : ${counter.value}",
+            text = "Count : ${viewModel.count.value}",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             )
@@ -94,13 +71,13 @@ fun CounterApp() {
             //modifier = Modifier.fillMaxSize(),
             //horizontalArrangement = Arrangement.Center,
         ) {
-            IconButton(onClick = { increment() }) {
+            IconButton(onClick = { viewModel.increment() }) {
                 androidx.compose.material3.Icon(
                     imageVector = Icons.Filled.KeyboardArrowUp,
                     contentDescription = "Increase"
                 )
             }
-            IconButton(onClick = { decrement() }) {
+            IconButton(onClick = { viewModel.decrement() }) {
                 androidx.compose.material3.Icon(
                     imageVector = Icons.Filled.KeyboardArrowDown,
                     contentDescription = "Decrease"
